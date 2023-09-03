@@ -3,22 +3,22 @@ package game.models;
 import javax.swing.*;
 import java.awt.*;
 
-public class Shoot {
+public class Enemy1 {
   private Image image;
   private int x, y;
   private int width, height;
   private boolean isVisible;
-  private static final int WIDTH = 938;
-  private static int SPEED = 10;
+//  private static final int WIDTH = 938;
+  private static int SPEED = 8;
 
-  public Shoot(int playerX, int playerY) {
+  public Enemy1(int playerX, int playerY) {
     this.x = playerX;
     this.y = playerY;
     isVisible = true;
   }
 
   public void load() {
-    ImageIcon reference = new ImageIcon("src//res//yellowshot.png");
+    ImageIcon reference = new ImageIcon("src//res//enemy1.png");
     image = reference.getImage();
 
     this.width = image.getWidth(null);
@@ -26,10 +26,10 @@ public class Shoot {
   }
 
   public void update() {
-    this.x += SPEED;
-    if (this.x > WIDTH) {
-      isVisible = false;
-    }
+    this.x -= SPEED;
+//    if (this.x > WIDTH) {
+//      isVisible = false;
+//    }
   }
 
   public Rectangle getBounds() {
@@ -44,12 +44,12 @@ public class Shoot {
     return y;
   }
 
-  public boolean isVisible() {
-    return isVisible;
-  }
-
   public void setVisible(boolean visible) {
     isVisible = visible;
+  }
+
+  public boolean isVisible() {
+    return isVisible;
   }
 
   public static int getSPEED() {

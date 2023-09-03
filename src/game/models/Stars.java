@@ -2,23 +2,24 @@ package game.models;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
-public class Shoot {
+public class Stars {
   private Image image;
   private int x, y;
   private int width, height;
   private boolean isVisible;
-  private static final int WIDTH = 938;
-  private static int SPEED = 10;
+  //  private static final int WIDTH = 938;
+  protected static int SPEED = 10;
 
-  public Shoot(int playerX, int playerY) {
-    this.x = playerX;
-    this.y = playerY;
+  public Stars (int x, int y) {
+    this.x = x;
+    this.y = x;
     isVisible = true;
   }
 
   public void load() {
-    ImageIcon reference = new ImageIcon("src//res//yellowshot.png");
+    ImageIcon reference = new ImageIcon("src//res//star.png");
     image = reference.getImage();
 
     this.width = image.getWidth(null);
@@ -26,14 +27,19 @@ public class Shoot {
   }
 
   public void update() {
-    this.x += SPEED;
-    if (this.x > WIDTH) {
-      isVisible = false;
-    }
-  }
+    if (this.x < 0) {
 
-  public Rectangle getBounds() {
-    return new Rectangle(x, y, width, height);
+      this.x = width;
+      Random starRandom1 = new Random();
+      int starWidth = starRandom1.nextInt(500);
+      this.x = starWidth +1024;
+
+      Random starRandom2 = new Random();
+      int starHeight = starRandom2.nextInt(768);
+      this.y = starHeight;
+    } else {
+      this.x -= SPEED;
+    }
   }
 
   public int getX() {
@@ -44,12 +50,12 @@ public class Shoot {
     return y;
   }
 
-  public boolean isVisible() {
-    return isVisible;
-  }
-
   public void setVisible(boolean visible) {
     isVisible = visible;
+  }
+
+  public boolean isVisible() {
+    return isVisible;
   }
 
   public static int getSPEED() {

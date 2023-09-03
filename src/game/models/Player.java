@@ -12,16 +12,18 @@ public class Player {
   private int dx, dy;
   private Image background;
   private int height, width;
+  private boolean isVisible;
 
   public Player() {
     this.x = 100;
     this.y = 100;
+    isVisible = true;
 
     shoots = new ArrayList<Shoot>();
   }
 
   public void load() {
-    ImageIcon reference = new ImageIcon("src//res//spaceship.png");
+    ImageIcon reference = new ImageIcon("src//res//spaceship5.png");
     background = reference.getImage();
     height = background.getHeight(null);
     width = background.getWidth(null);
@@ -34,6 +36,10 @@ public class Player {
 
   public void simpleShoot() {
     this.shoots.add(new Shoot(x + (width / 2), y + (height / y)));
+  }
+
+  public Rectangle getBounds() {
+    return new Rectangle(x, y, width, height);
   }
 
   public void keyPressed(KeyEvent key) {
@@ -71,6 +77,14 @@ public class Player {
     if (code == KeyEvent.VK_RIGHT) {
       dx=0;
     }
+  }
+
+  public boolean isVisible() {
+    return isVisible;
+  }
+
+  public void setVisible(boolean visible) {
+    isVisible = visible;
   }
 
   public int getX() {
