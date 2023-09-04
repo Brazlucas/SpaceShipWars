@@ -2,24 +2,42 @@ package game.models;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player implements ActionListener {
   private List <Shoot> shoots;
   private int x, y;
   private int dx, dy;
   private Image background;
   private int height, width;
-  private boolean isVisible;
+  private boolean isVisible, isTurbo;
+  private Timer timer;
 
   public Player() {
     this.x = 100;
     this.y = 100;
     isVisible = true;
+    isTurbo = false;
 
     shoots = new ArrayList<Shoot>();
+
+    timer = new Timer(5000, this);
+    timer.start();
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    if (isTurbo == true) {
+      turbo();
+      isTurbo = false;
+    }
+    if (!isTurbo) {
+      load();
+    }
   }
 
   public void load() {
@@ -38,6 +56,16 @@ public class Player {
     this.shoots.add(new Shoot(x + (width / 2), y + (height / y)));
   }
 
+  public void turbo() {
+    isTurbo = true;
+    ImageIcon reference = new ImageIcon("src//res//spaceship5turbo.png");
+    background = reference.getImage();
+  }
+
+  public boolean isTurbo() {
+    return isTurbo;
+  }
+
   public Rectangle getBounds() {
     return new Rectangle(x, y, width, height);
   }
@@ -45,20 +73,32 @@ public class Player {
   public void keyPressed(KeyEvent key) {
     int code = key.getKeyCode();
 
+    if (code == KeyEvent.VK_X) {
+      if (!isTurbo) {
+        turbo();
+      }
+    }
+
     if (code == KeyEvent.VK_SPACE) {
-      simpleShoot();
+      if (!isTurbo) {
+        simpleShoot();
+      }
     }
+
     if (code == KeyEvent.VK_UP) {
-      dy=-3;
+      dy=-8;
     }
+
     if (code == KeyEvent.VK_DOWN) {
-      dy=3;
+      dy=8;
     }
+
     if (code == KeyEvent.VK_LEFT) {
-      dx=-3;
+      dx=-8;
     }
+
     if (code == KeyEvent.VK_RIGHT) {
-      dx=3;
+      dx=8;
     }
   }
 
@@ -68,12 +108,15 @@ public class Player {
     if (code == KeyEvent.VK_UP) {
       dy=0;
     }
+
     if (code == KeyEvent.VK_DOWN) {
       dy=0;
     }
+
     if (code == KeyEvent.VK_LEFT) {
       dx=0;
     }
+
     if (code == KeyEvent.VK_RIGHT) {
       dx=0;
     }

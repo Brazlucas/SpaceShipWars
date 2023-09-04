@@ -58,6 +58,10 @@ public class Stars {
     return isVisible;
   }
 
+  public static void setSPEED(int SPEED) {
+    Stars.SPEED = SPEED;
+  }
+
   public static int getSPEED() {
     return SPEED;
   }

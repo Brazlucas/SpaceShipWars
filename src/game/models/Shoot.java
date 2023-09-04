@@ -9,11 +9,11 @@ public class Shoot {
   private int width, height;
   private boolean isVisible;
   private static final int WIDTH = 938;
-  private static int SPEED = 10;
+  private static int SPEED = 12;
 
   public Shoot(int playerX, int playerY) {
-    this.x = playerX;
-    this.y = playerY;
+    this.x = playerX + 10;
+    this.y = playerY + 25;
     isVisible = true;
   }
 
@@ -23,6 +23,10 @@ public class Shoot {
 
     this.width = image.getWidth(null);
     this.height = image.getHeight(null);
+  }
+
+  public static void setSPEED(int SPEED) {
+    Shoot.SPEED = SPEED;
   }
 
   public void update() {

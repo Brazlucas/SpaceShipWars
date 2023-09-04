@@ -16,6 +16,7 @@ public class Stage extends JPanel implements ActionListener {
   private List<Enemy1> enemy1;
   private List<Stars> stars;
   private boolean inGame;
+  private SoundPlayer shootSound;
 
   public Stage() {
     setFocusable(true);
@@ -25,6 +26,8 @@ public class Stage extends JPanel implements ActionListener {
 
     player = new Player();
     player.load();
+
+    shootSound = new SoundPlayer("src//res//blaster2.mp3");
 
     addKeyListener(new KAdapter());
 
@@ -42,7 +45,7 @@ public class Stage extends JPanel implements ActionListener {
   }
 
   public void addEnemies() {
-    int coords [] = new int [0];
+    int coords [] = new int [40];
     enemy1 = new ArrayList<Enemy1>();
 
     for (int i = 0; i < coords.length; i++) {
@@ -63,12 +66,43 @@ public class Stage extends JPanel implements ActionListener {
     }
   }
 
+  public void debugger(Graphics g) {
+    // DEBUG do inimigo
+    for (Enemy1 enemy : enemy1) {
+      if (enemy.isVisible()) {
+        g.setColor(Color.RED);
+        Rectangle bounds = enemy.getBounds();
+        g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+      }
+    }
+
+    // DEBUG do tiro
+    List<Shoot> shootDebug = player.getShoots();
+    for (int i = 0; i < shootDebug.size(); i++) {
+      Shoot m = shootDebug.get(i);
+      if (m.isVisible()) {
+        g.setColor(Color.BLUE); // Cor do retângulo dos tiros
+        Rectangle bounds = m.getBounds();
+        g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+      }
+    }
+
+    // DEBUG do player
+    if (player.isVisible()) {
+      g.setColor(Color.RED);
+      Rectangle bounds = player.getBounds();
+      g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+    }
+  }
+
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D graphics = (Graphics2D) g;
 
     if (inGame) {
       graphics.drawImage(background, 0, 0, screenWidth, screenHeight, this);
+
+      debugger(g);
 
       for (int i = 0; i < stars.size(); i++) {
         Stars index = stars.get(i);
@@ -81,6 +115,7 @@ public class Stage extends JPanel implements ActionListener {
       List<Shoot> shoots = player.getShoots();
       for(int i = 0; i < shoots.size(); i++) {
         Shoot m = shoots.get(i);
+        shootSound.play();
         m.load();
         graphics.drawImage(m.getImage(), m.getX(), m.getY(), this);
       }
@@ -91,8 +126,9 @@ public class Stage extends JPanel implements ActionListener {
         graphics.drawImage(in.getImage(), in.getX(), in.getY(), this);
       }
     } else {
-      ImageIcon gameOver = new ImageIcon("src//res//gameover.png");
-      graphics.drawImage(gameOver.getImage(), 1024, 768, this);
+      ImageIcon reference = new ImageIcon("src//res//gameover.png");
+      background = reference.getImage();
+      graphics.drawImage(reference.getImage(), 100, 100, null);
     }
 
     g.dispose();
@@ -100,8 +136,15 @@ public class Stage extends JPanel implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-
     player.update();
+
+    if (player.isTurbo()) {
+      timer.setDelay(2);
+    }
+
+    if (player.isTurbo() == false) {
+      timer.setDelay(5);
+    }
 
     for (int i = 0; i < stars.size(); i++) {
       Stars on = stars.get(i);
@@ -117,6 +160,12 @@ public class Stage extends JPanel implements ActionListener {
       Shoot m = shoots.get(shootIndex);
       if(m.isVisible()) {
         m.update();
+        if (player.isTurbo()) {
+          shoots.get(shootIndex).setSPEED(1);
+        }
+        if (!player.isTurbo()) {
+          shoots.get(shootIndex).setSPEED(12);
+        }
       } else {
         shoots.remove(shootIndex);
       }
@@ -147,9 +196,13 @@ public class Stage extends JPanel implements ActionListener {
       enemyShape1 = tempEnemy1.getBounds();
 
       if (shipShape.intersects(enemyShape1)) {
-        player.setVisible(false);
-        tempEnemy1.setVisible(false);
-        inGame = false;
+        if (player.isTurbo()) {
+          tempEnemy1.setVisible(false);
+        } else {
+          player.setVisible(false);
+          tempEnemy1.setVisible(false);
+          inGame = false;
+        }
       }
     }
 
@@ -173,16 +226,12 @@ public class Stage extends JPanel implements ActionListener {
   private class KAdapter extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
-      if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-        Stars.SPEED = 12;
-      }
       player.keyPressed(e);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
       player.keyRelease(e);
-      Stars.SPEED = 10;
     }
   }
 }
