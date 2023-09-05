@@ -16,7 +16,7 @@ public class Stage extends JPanel implements ActionListener {
   private List<Enemy1> enemy1;
   private List<Stars> stars;
   private boolean inGame;
-  private SoundPlayer shootSound;
+//  private SoundPlayer shootSound;
 
   public Stage() {
     setFocusable(true);
@@ -27,7 +27,7 @@ public class Stage extends JPanel implements ActionListener {
     player = new Player();
     player.load();
 
-    shootSound = new SoundPlayer("src//res//blaster2.mp3");
+//    shootSound = new SoundPlayer("src//res//blaster2.mp3");
 
     addKeyListener(new KAdapter());
 
@@ -115,7 +115,7 @@ public class Stage extends JPanel implements ActionListener {
       List<Shoot> shoots = player.getShoots();
       for(int i = 0; i < shoots.size(); i++) {
         Shoot m = shoots.get(i);
-        shootSound.play();
+//        shootSound.play();
         m.load();
         graphics.drawImage(m.getImage(), m.getX(), m.getY(), this);
       }
