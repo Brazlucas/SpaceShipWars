@@ -42,7 +42,7 @@ public class Player implements ActionListener {
   }
 
   public void load() {
-    ImageIcon reference = new ImageIcon("src//res//spaceship5.png");
+    ImageIcon reference = new ImageIcon("src//res//spaceship5small.png");
     shootSound = new SoundPlayer("src//res//blaster.wav");
     background = reference.getImage();
     height = background.getHeight(null);

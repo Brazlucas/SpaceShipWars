@@ -10,7 +10,7 @@ public class Enemy1 {
   private boolean isVisible;
 //  private static final int WIDTH = 938;
   private static int SPEED = 8;
-  private boolean enemyHasDamaged = false;
+  private int enemyHasDamaged = 0;
 
   public Enemy1(int playerX, int playerY) {
     this.x = playerX;
@@ -19,7 +19,7 @@ public class Enemy1 {
   }
 
   public void load() {
-    ImageIcon reference = new ImageIcon("src//res//enemy1.png");
+    ImageIcon reference = new ImageIcon("src//res//enemy1small.png");
     image = reference.getImage();
 
     enemyDamaged();
@@ -29,9 +29,12 @@ public class Enemy1 {
   }
 
   public void enemyDamaged() {
-    if (enemyHasDamaged) {
-      ImageIcon reference = new ImageIcon("src//res//enemy1damage.png");
+    if (enemyHasDamaged == 1) {
+      ImageIcon reference = new ImageIcon("src//res//enemy1damagesmall.png");
       image = reference.getImage();
+    }
+    if (enemyHasDamaged > 1) {
+      setVisible(false);
     }
   }
 
@@ -62,11 +65,11 @@ public class Enemy1 {
     return isVisible;
   }
 
-  public boolean isEnemyHasDamaged() {
+  public int getEnemyHasDamaged() {
     return enemyHasDamaged;
   }
 
-  public void setEnemyHasDamaged(boolean enemyHasDamaged) {
+  public void setEnemyHasDamaged(int enemyHasDamaged) {
     this.enemyHasDamaged = enemyHasDamaged;
   }
 

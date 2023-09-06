@@ -32,7 +32,7 @@ public class Stars {
       this.x = width;
       Random starRandom1 = new Random();
       int starWidth = starRandom1.nextInt(500);
-      this.x = starWidth +1024;
+      this.x = starWidth + 1024;
 
       Random starRandom2 = new Random();
       int starHeight = starRandom2.nextInt(768);

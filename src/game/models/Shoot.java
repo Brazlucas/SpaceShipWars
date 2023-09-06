@@ -12,8 +12,8 @@ public class Shoot {
   private static int SPEED = 12;
 
   public Shoot(int playerX, int playerY) {
-    this.x = playerX + 10;
-    this.y = playerY + 25;
+    this.x = playerX + 5;
+    this.y = playerY + 15;
     isVisible = true;
   }
 

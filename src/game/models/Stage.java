@@ -16,10 +16,10 @@ public class Stage extends JPanel implements ActionListener {
   private List<Enemy1> enemy1;
   private List<Stars> stars;
   private boolean inGame;
-//  private SoundPlayer stageMusic;
+  private SoundPlayer stageMusic;
   private SoundPlayer gameOverSound;
-
   private SoundPlayer explosion;
+  private int totalDeaths;
 
   public Stage() {
     setFocusable(true);
@@ -110,7 +110,7 @@ public class Stage extends JPanel implements ActionListener {
     if (inGame) {
       graphics.drawImage(background, 0, 0, screenWidth, screenHeight, this);
 
-      debugger(g);
+//      debugger(g);
 
       for (int i = 0; i < stars.size(); i++) {
         Stars index = stars.get(i);
@@ -132,8 +132,15 @@ public class Stage extends JPanel implements ActionListener {
         in.load();
         graphics.drawImage(in.getImage(), in.getX(), in.getY(), this);
       }
+
+      graphics.setColor(Color.RED);
+      Font font = new Font("Arial", Font.PLAIN, 30);
+      graphics.setFont(font);
+      graphics.drawString("KILLS:" + totalDeaths, 10, 30);
+
     } else {
       gameOverSound.getClip().start();
+//      stageMusic.stop();
       ImageIcon reference = new ImageIcon("src//res//gameover.png");
       background = reference.getImage();
       graphics.drawImage(reference.getImage(), 100, 100, null);
@@ -224,9 +231,11 @@ public class Stage extends JPanel implements ActionListener {
         Enemy1 tempEnemy1 = enemy1.get(i);
         enemyShape1 = tempEnemy1.getBounds();
         if (shootShape.intersects(enemyShape1)) {
-          explosion.play();
-          tempEnemy1.setEnemyHasDamaged(true);
-//          tempEnemy1.setVisible(false);
+          tempEnemy1.setEnemyHasDamaged(tempEnemy1.getEnemyHasDamaged() + 1);
+          if (tempEnemy1.getEnemyHasDamaged() > 1) {
+            totalDeaths += 1;
+            explosion.play();
+          }
           tempShoot.setVisible(false);
         }
       }
