@@ -16,7 +16,10 @@ public class Stage extends JPanel implements ActionListener {
   private List<Enemy1> enemy1;
   private List<Stars> stars;
   private boolean inGame;
-//  private SoundPlayer shootSound;
+//  private SoundPlayer stageMusic;
+  private SoundPlayer gameOverSound;
+
+  private SoundPlayer explosion;
 
   public Stage() {
     setFocusable(true);
@@ -24,10 +27,15 @@ public class Stage extends JPanel implements ActionListener {
     ImageIcon reference = new ImageIcon("src//res//blackground.png");
     background = reference.getImage();
 
+//    stageMusic = new SoundPlayer("src//res//lisbonacid.wav");
+//    stageMusic.play();
+
+    gameOverSound = new SoundPlayer("src//res//gameover.wav");
+
+    explosion = new SoundPlayer("src//res//explosion.wav");
+
     player = new Player();
     player.load();
-
-//    shootSound = new SoundPlayer("src//res//blaster2.mp3");
 
     addKeyListener(new KAdapter());
 
@@ -115,7 +123,6 @@ public class Stage extends JPanel implements ActionListener {
       List<Shoot> shoots = player.getShoots();
       for(int i = 0; i < shoots.size(); i++) {
         Shoot m = shoots.get(i);
-//        shootSound.play();
         m.load();
         graphics.drawImage(m.getImage(), m.getX(), m.getY(), this);
       }
@@ -126,6 +133,7 @@ public class Stage extends JPanel implements ActionListener {
         graphics.drawImage(in.getImage(), in.getX(), in.getY(), this);
       }
     } else {
+      gameOverSound.getClip().start();
       ImageIcon reference = new ImageIcon("src//res//gameover.png");
       background = reference.getImage();
       graphics.drawImage(reference.getImage(), 100, 100, null);
@@ -216,7 +224,9 @@ public class Stage extends JPanel implements ActionListener {
         Enemy1 tempEnemy1 = enemy1.get(i);
         enemyShape1 = tempEnemy1.getBounds();
         if (shootShape.intersects(enemyShape1)) {
-          tempEnemy1.setVisible(false);
+          explosion.play();
+          tempEnemy1.setEnemyHasDamaged(true);
+//          tempEnemy1.setVisible(false);
           tempShoot.setVisible(false);
         }
       }

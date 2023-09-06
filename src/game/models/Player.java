@@ -16,6 +16,7 @@ public class Player implements ActionListener {
   private int height, width;
   private boolean isVisible, isTurbo;
   private Timer timer;
+  private SoundPlayer shootSound;
 
   public Player() {
     this.x = 100;
@@ -42,6 +43,7 @@ public class Player implements ActionListener {
 
   public void load() {
     ImageIcon reference = new ImageIcon("src//res//spaceship5.png");
+    shootSound = new SoundPlayer("src//res//blaster.wav");
     background = reference.getImage();
     height = background.getHeight(null);
     width = background.getWidth(null);
@@ -81,6 +83,7 @@ public class Player implements ActionListener {
 
     if (code == KeyEvent.VK_SPACE) {
       if (!isTurbo) {
+        shootSound.play();
         simpleShoot();
       }
     }
