@@ -17,12 +17,14 @@ public class Player implements ActionListener {
   private boolean isVisible, isTurbo;
   private Timer timer;
   private SoundPlayer shootSound;
+  private int playerLife;
 
   public Player() {
     this.x = 100;
     this.y = 100;
     isVisible = true;
     isTurbo = false;
+    playerLife = 3;
 
     shoots = new ArrayList<Shoot>();
 
@@ -43,6 +45,7 @@ public class Player implements ActionListener {
 
   public void load() {
     ImageIcon reference = new ImageIcon("src//res//spaceship5small.png");
+    playerDamaged();
     shootSound = new SoundPlayer("src//res//blaster.wav");
     background = reference.getImage();
     height = background.getHeight(null);
@@ -56,6 +59,16 @@ public class Player implements ActionListener {
 
   public void simpleShoot() {
     this.shoots.add(new Shoot(x + (width / 2), y + (height / y)));
+  }
+
+  public void playerDamaged() {
+    if (playerLife == 1) {
+      ImageIcon reference = new ImageIcon("src//res//enemy1damagesmall.png");
+      background = reference.getImage();
+    }
+    if (playerLife < 1) {
+      setVisible(false);
+    }
   }
 
   public void turbo() {
@@ -123,6 +136,14 @@ public class Player implements ActionListener {
     if (code == KeyEvent.VK_RIGHT) {
       dx=0;
     }
+  }
+
+  public int getPlayerLife() {
+    return playerLife;
+  }
+
+  public void setPlayerLife(int playerLife) {
+    this.playerLife = playerLife;
   }
 
   public boolean isVisible() {
