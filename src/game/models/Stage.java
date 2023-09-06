@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -231,8 +230,8 @@ public class Stage extends JPanel implements ActionListener {
         Enemy1 tempEnemy1 = enemy1.get(i);
         enemyShape1 = tempEnemy1.getBounds();
         if (shootShape.intersects(enemyShape1)) {
-          tempEnemy1.setEnemyHasDamaged(tempEnemy1.getEnemyHasDamaged() + 1);
-          if (tempEnemy1.getEnemyHasDamaged() > 1) {
+          tempEnemy1.setenemyLife(tempEnemy1.getenemyLife() - 1);
+          if (tempEnemy1.getenemyLife() < 1) {
             totalDeaths += 1;
             explosion.play();
           }
