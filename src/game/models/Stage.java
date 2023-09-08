@@ -109,7 +109,7 @@ public class Stage extends JPanel implements ActionListener {
     if (inGame) {
       graphics.drawImage(background, 0, 0, screenWidth, screenHeight, this);
 
-//      debugger(g);
+      debugger(g);
 
       for (int i = 0; i < stars.size(); i++) {
         Stars index = stars.get(i);
